@@ -3,7 +3,7 @@ import shutil
 import puremagic
 
 # Changing the current directory to Downloads Folder.
-os.chdir('C:\\Users\\VIREN\\Downloads')
+os.chdir("""Your Downloads Directory Here....""")
 
 current_dir = os.getcwd()
 
@@ -14,9 +14,12 @@ dwnload_contents = os.listdir(current_dir)
 
 
 def main():
+
     # count = 0
+
     try:
         for files in dwnload_contents:
+
             # count += 1
             # print(f"{count}: {files}")
 
