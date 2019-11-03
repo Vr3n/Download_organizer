@@ -14,10 +14,10 @@ dwnload_contents = os.listdir(current_dir)
 
 
 def main():
-    count = 0
+    # count = 0
     try:
         for files in dwnload_contents:
-            count += 1
+            # count += 1
             # print(f"{count}: {files}")
 
             # Check if the Content is File or a Folder.
@@ -32,14 +32,34 @@ def main():
                 if kind is None:
                     print("File type not recognized moving to 'Other's' Folder")
 
+                    # Checking if folder exists or not.
+                    if os.path.exists(current_dir + "\\" + "others"):
+                        print("Folder already exists... moving into folder.")
+                        shutil.move(files, current_dir + "\\" + "others")
+
+                    else:
+                        print("The folder doesn't exist creating the folder ...")
+                        os.mkdir(current_dir + "\\" + "others")
+                        shutil.move(files, current_dir + "\\" + "others")
+
                 else:
-                    print(f"\n{count}: {files} is of type: {kind}")
+                    if os.path.exists(current_dir + "\\" + kind[1:]):
+                        print("Folder already exists... moving into folder.")
+                        shutil.move(files, current_dir + "\\" + kind[1:])
+
+                    else:
+                        print("Folder doesn't exist creating the folder...")
+                        os.mkdir(current_dir + "\\" + kind[1:])
+                        print("Folder created moving the file..")
+                        shutil.move(files, current_dir + "\\" + kind[1:])
+
+                    # print(f"\n{count}: {files} is of type: {kind}")
+
+        # print(
+        #     f"*************************************************************\nThe number of files in this Directory are: {count}")
 
     except puremagic.PureError:
-        print("Cannot identyfy the File!!!")
-
-    # print(
-    #     f"*************************************************************\nThe number of files in this Directory are: {count}")
+        print("Could not Find the File Type!!!")
 
 
 if __name__ == "__main__":
