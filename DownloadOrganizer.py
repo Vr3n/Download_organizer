@@ -1,9 +1,10 @@
 import os
 import shutil
+import logging
 import puremagic
 
 # Changing the current directory to Downloads Folder.
-os.chdir("""Your Downloads Directory Here....""")
+os.chdir("C:\\Users\\VIREN\\Downloads")
 
 current_dir = os.getcwd()
 
@@ -13,7 +14,7 @@ dwnload_contents = os.listdir(current_dir)
 # print(dwnload_contents)
 
 
-def main():
+def file_handler():
 
     # count = 0
 
@@ -25,7 +26,7 @@ def main():
 
             # Check if the Content is File or a Folder.
             if os.path.isdir(files):
-                print("it's a Directory, skipping to next file.")
+                logging.info("it's a Directory, skipping to next file.")
 
             else:
                 # retrieving and storing the file type of files in kind variable.
@@ -33,25 +34,30 @@ def main():
 
                 # Checks for the File type.
                 if kind is None:
-                    print("File type not recognized moving to 'Other's' Folder")
+                    logging.info(
+                        "File type not recognized moving to 'Other's' Folder")
 
                     # Checking if folder exists or not.
                     if os.path.exists(current_dir + "\\" + "others"):
-                        print("Folder already exists... moving into folder.")
+                        logging.info(
+                            "Folder already exists... moving into folder.")
                         shutil.move(files, current_dir + "\\" + "others")
 
                     else:
-                        print("The folder doesn't exist creating the folder ...")
+                        logging.info(
+                            "The folder doesn't exist creating the folder ...")
                         os.mkdir(current_dir + "\\" + "others")
                         shutil.move(files, current_dir + "\\" + "others")
 
                 else:
                     if os.path.exists(current_dir + "\\" + kind[1:]):
-                        print("Folder already exists... moving into folder.")
+                        logging.info(
+                            "Folder already exists... moving into folder.")
                         shutil.move(files, current_dir + "\\" + kind[1:])
 
                     else:
-                        print("Folder doesn't exist creating the folder...")
+                        logging.info(
+                            "Folder doesn't exist creating the folder...")
                         os.mkdir(current_dir + "\\" + kind[1:])
                         print("Folder created moving the file..")
                         shutil.move(files, current_dir + "\\" + kind[1:])
@@ -62,8 +68,8 @@ def main():
         #     f"*************************************************************\nThe number of files in this Directory are: {count}")
 
     except puremagic.PureError:
-        print("Could not Find the File Type!!!")
+        logging.error("Could not Find the File Type!!!")
 
 
 if __name__ == "__main__":
-    main()
+    file_handler()
