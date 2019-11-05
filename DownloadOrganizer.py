@@ -14,7 +14,7 @@ dwnload_contents = os.listdir(current_dir)
 # print(dwnload_contents)
 
 
-def file_handler():
+def FileHandler():
 
     # count = 0
 
@@ -72,4 +72,4 @@ def file_handler():
 
 
 if __name__ == "__main__":
-    file_handler()
+    FileHandler()
