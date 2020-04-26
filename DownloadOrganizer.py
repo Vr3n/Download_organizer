@@ -1,75 +1,89 @@
 import os
+import platform
 import shutil
 import logging
 import puremagic
+import pdb
 
 # Changing the current directory to Downloads Folder.
-os.chdir("C:\\Users\\VIREN\\Downloads")
 
-current_dir = os.getcwd()
+
+# determining which os system is installed and retrieving the home path.
+user_os = platform.system()
+
+if user_os == 'Linux':
+    downloads_path = os.getenv('HOME')+'/Downloads/'
+elif user_os == 'Windows':
+    downloads_path = os.getenv('USERPROFILE')+'/Downloads/'
+
+
+print(f'found the user\'s download path -- {downloads_path}')
 
 # Listing the contents in Directory.
-dwnload_contents = os.listdir(current_dir)
+download_folder_contents = os.listdir(downloads_path)
 
-# print(dwnload_contents)
+# print(download_folder_contents)
 
 
 def file_handler():
 
-    # count = 0
+    count = 0
 
     try:
-        for files in dwnload_contents:
-
-            # count += 1
-            # print(f"{count}: {files}")
+        for files in download_folder_contents:
+            count += 1
+            print(f"{count}: {files}")
 
             # Check if the Content is File or a Folder.
-            if os.path.isdir(files):
-                logging.info("it's a Directory, skipping to next file.")
+            if os.path.isdir(os.path.join(downloads_path, files)):
+                print(f"{files} is a Directory!")
 
             else:
                 # retrieving and storing the file type of files in kind variable.
                 kind = puremagic.ext_from_filename(files)
+                print(f'file extension is - {kind}')
 
                 # Checks for the File type.
-                if kind is None:
-                    logging.info(
+                if kind is None or ' ':
+                    print(
                         "File type not recognized moving to 'Other's' Folder")
 
                     # Checking if folder exists or not.
-                    if os.path.exists(current_dir + "\\" + "others"):
-                        logging.info(
+                    if os.path.exists(os.path.join(downloads_path, "others")):
+                        print(
                             "Folder already exists... moving into folder.")
-                        shutil.move(files, current_dir + "\\" + "others")
+                        shutil.move(downloads_path + files,
+                                    downloads_path + "others")
 
                     else:
-                        logging.info(
+                        print(
                             "The folder doesn't exist creating the folder ...")
-                        os.mkdir(current_dir + "\\" + "others")
-                        shutil.move(files, current_dir + "\\" + "others")
+                        os.mkdir(downloads_path + "others")
+                        shutil.move(downloads_path + files,
+                                    downloads_path + "others")
 
                 else:
-                    if os.path.exists(current_dir + "\\" + kind[1:]):
-                        logging.info(
+                    if os.path.exists(os.path.join(downloads_path, kind[1:])):
+                        print(
                             "Folder already exists... moving into folder.")
-                        shutil.move(files, current_dir + "\\" + kind[1:])
+                        shutil.move(downloads_path + files,
+                                    downloads_path + kind[1:])
 
                     else:
-                        logging.info(
+                        print(
                             "Folder doesn't exist creating the folder...")
-                        os.mkdir(current_dir + "\\" + kind[1:])
+                        os.mkdir(downloads_path + kind[1:])
                         print("Folder created moving the file..")
-                        shutil.move(files, current_dir + "\\" + kind[1:])
+                        shutil.move(downloads_path + files,
+                                    downloads_path + kind[1:])
 
-                    # print(f"\n{count}: {files} is of type: {kind}")
+                    print(f"\n{count}: {files} is of type: {kind}")
 
-        # print(
-        #     f"*************************************************************\nThe number of files in this Directory are: {count}")
+        print(
+            f"*************************************************************\nThe number of files in this Directory are: {count}")
 
     except puremagic.PureError:
-        logging.error("Could not Find the File Type!!!")
+        print("Could not Find the File Type!!!")
 
 
-if __name__ == "__main__":
-    file_handler()
+file_handler()
